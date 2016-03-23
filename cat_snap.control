@@ -1,0 +1,3 @@
+comment = 'Tools taking snapshots of stats and the catalog'
+default_version = '0.1.0'
+relocatable = false

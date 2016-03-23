@@ -10,7 +10,7 @@
 .deps/
 
 # built targets
-/sql/*--*
+/sql/*
 !/sql/*--*--*.sql
 
 # Test artifacts

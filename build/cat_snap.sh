@@ -1,0 +1,3 @@
+cat generated/types.sql
+
+
