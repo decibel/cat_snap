@@ -1,2 +1,51 @@
 \set ECHO none
+          List of relations
+  Schema  |  Name  | Type  |  Owner  
+----------+--------+-------+---------
+ cat_snap | entity | table | decibel
+(1 row)
+
+   Table "cat_snap.entity"
+ Column |  Type   | Modifiers 
+--------+---------+-----------
+ entity | text    | not null
+ stat   | boolean | not null
+Indexes:
+    "entity_pkey" PRIMARY KEY, btree (entity)
+
+    Composite type "cat_snap.raw_type"
+     Column     |     Type     | Modifiers 
+----------------+--------------+-----------
+ oid            | oid          | 
+ typname        | text         | 
+ typnamespace   | oid          | 
+ typowner       | oid          | 
+ typlen         | smallint     | 
+ typbyval       | boolean      | 
+ typtype        | "char"       | 
+ typcategory    | "char"       | 
+ typispreferred | boolean      | 
+ typisdefined   | boolean      | 
+ typdelim       | "char"       | 
+ typrelid       | oid          | 
+ typelem        | oid          | 
+ typarray       | oid          | 
+ typinput       | regproc      | 
+ typoutput      | regproc      | 
+ typreceive     | regproc      | 
+ typsend        | regproc      | 
+ typmodin       | regproc      | 
+ typmodout      | regproc      | 
+ typanalyze     | regproc      | 
+ typalign       | "char"       | 
+ typstorage     | "char"       | 
+ typnotnull     | boolean      | 
+ typbasetype    | oid          | 
+ typtypmod      | integer      | 
+ typndims       | integer      | 
+ typcollation   | oid          | 
+ typdefaultbin  | pg_node_tree | 
+ typdefault     | text         | 
+ typacl         | aclitem[]    | 
+
 # TRANSACTION INTENTIONALLY LEFT OPEN!
