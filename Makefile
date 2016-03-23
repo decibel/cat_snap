@@ -17,6 +17,9 @@ generated/%.sql: meta/%.sql cat_tools
 	@echo >> $@
 	@psql -qt -P format=unaligned --no-psqlrc -v ON_ERROR_STOP=1 -f $< >> $@
 
+.PHONY: genclean
+genclean:
+	@rm $(GENERATED)
+
 sql/%.sql: build/%.sh $(GENERATED)
 	$< > $@
-
