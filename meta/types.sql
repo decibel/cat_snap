@@ -26,4 +26,5 @@ SELECT format(
                 )
             )
         )
+    ORDER BY relname
 ;
