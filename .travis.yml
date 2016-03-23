@@ -5,7 +5,9 @@ before_install:
   - sudo sh ./apt.postgresql.org.sh
   - sudo sh -c "echo deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs 2>/dev/null)-pgdg main $PGVERSION >> /etc/apt/sources.list.d/pgdg.list"
 env:
-  - PGVERSION=9.3
+  # 9.3: https://travis-ci.org/decibel/cat_snap/jobs/117857516
   - PGVERSION=9.4
   - PGVERSION=9.5
 script: bash ./pg-travis-pgxn.sh
+
+# vi: expandtab ts=2 sw=2
