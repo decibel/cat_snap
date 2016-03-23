@@ -6,104 +6,103 @@ CREATE TABLE entity(
 	, stat		boolean		NOT NULL
 );
 
-COPY entity FROM STDIN;
-pg_type	f
-pg_roles	f
-pg_settings	f
-pg_file_settings	f
-pg_config	f
-pg_user_mapping	f
-pg_stat_bgwriter	t
-pg_replication_origin_status	f
-pg_largeobject	f
-pg_attribute	f
-pg_proc	f
-pg_class	f
-pg_attrdef	f
-pg_constraint	f
-pg_inherits	f
-pg_index	f
-pg_operator	f
-pg_opfamily	f
-pg_opclass	f
-pg_am	f
-pg_amop	f
-pg_amproc	f
-pg_language	f
-pg_largeobject_metadata	f
-pg_aggregate	f
-pg_rewrite	f
-pg_trigger	f
-pg_event_trigger	f
-pg_description	f
-pg_cast	f
-pg_enum	f
-pg_namespace	f
-pg_conversion	f
-pg_depend	f
-pg_database	f
-pg_db_role_setting	f
-pg_tablespace	f
-pg_pltemplate	f
-pg_auth_members	f
-pg_shdepend	f
-pg_shdescription	f
-pg_ts_config	f
-pg_ts_config_map	f
-pg_ts_dict	f
-pg_ts_parser	f
-pg_ts_template	f
-pg_extension	f
-pg_foreign_data_wrapper	f
-pg_foreign_server	f
-pg_foreign_table	f
-pg_policy	f
-pg_replication_origin	f
-pg_default_acl	f
-pg_seclabel	f
-pg_shseclabel	f
-pg_collation	f
-pg_range	f
-pg_transform	f
-pg_policies	f
-pg_rules	f
-pg_matviews	f
-pg_stats	t
-pg_locks	f
-pg_cursors	f
-pg_available_extensions	f
-pg_available_extension_versions	f
-pg_prepared_xacts	f
-pg_prepared_statements	f
-pg_seclabels	f
-pg_stat_xact_sys_tables	t
-pg_timezone_abbrevs	f
-pg_timezone_names	f
-pg_stat_user_tables	t
-pg_stat_all_tables	t
-pg_stat_xact_all_tables	t
-pg_stat_sys_tables	t
-pg_stat_xact_user_tables	t
-pg_statio_all_tables	t
-pg_statio_sys_tables	t
-pg_statio_user_tables	t
-pg_stat_all_indexes	t
-pg_stat_sys_indexes	t
-pg_stat_user_indexes	t
-pg_statio_all_indexes	t
-pg_statio_sys_indexes	t
-pg_statio_user_indexes	t
-pg_statio_all_sequences	t
-pg_statio_sys_sequences	t
-pg_statio_user_sequences	t
-pg_stat_activity	t
-pg_stat_replication	t
-pg_stat_wal_receiver	t
-pg_stat_ssl	t
-pg_replication_slots	f
-pg_stat_database	t
-pg_stat_database_conflicts	t
-pg_stat_user_functions	t
-pg_stat_xact_user_functions	t
-pg_stat_archiver	t
-\.
+ INSERT INTO entity VALUES( 'pg_type', 'f' );
+ INSERT INTO entity VALUES( 'pg_roles', 'f' );
+ INSERT INTO entity VALUES( 'pg_settings', 'f' );
+ INSERT INTO entity VALUES( 'pg_file_settings', 'f' );
+ INSERT INTO entity VALUES( 'pg_config', 'f' );
+ INSERT INTO entity VALUES( 'pg_user_mapping', 'f' );
+ INSERT INTO entity VALUES( 'pg_stat_bgwriter', 't' );
+ INSERT INTO entity VALUES( 'pg_replication_origin_status', 'f' );
+ INSERT INTO entity VALUES( 'pg_largeobject', 'f' );
+ INSERT INTO entity VALUES( 'pg_attribute', 'f' );
+ INSERT INTO entity VALUES( 'pg_proc', 'f' );
+ INSERT INTO entity VALUES( 'pg_class', 'f' );
+ INSERT INTO entity VALUES( 'pg_attrdef', 'f' );
+ INSERT INTO entity VALUES( 'pg_constraint', 'f' );
+ INSERT INTO entity VALUES( 'pg_inherits', 'f' );
+ INSERT INTO entity VALUES( 'pg_index', 'f' );
+ INSERT INTO entity VALUES( 'pg_operator', 'f' );
+ INSERT INTO entity VALUES( 'pg_opfamily', 'f' );
+ INSERT INTO entity VALUES( 'pg_opclass', 'f' );
+ INSERT INTO entity VALUES( 'pg_am', 'f' );
+ INSERT INTO entity VALUES( 'pg_amop', 'f' );
+ INSERT INTO entity VALUES( 'pg_amproc', 'f' );
+ INSERT INTO entity VALUES( 'pg_language', 'f' );
+ INSERT INTO entity VALUES( 'pg_largeobject_metadata', 'f' );
+ INSERT INTO entity VALUES( 'pg_aggregate', 'f' );
+ INSERT INTO entity VALUES( 'pg_rewrite', 'f' );
+ INSERT INTO entity VALUES( 'pg_trigger', 'f' );
+ INSERT INTO entity VALUES( 'pg_event_trigger', 'f' );
+ INSERT INTO entity VALUES( 'pg_description', 'f' );
+ INSERT INTO entity VALUES( 'pg_cast', 'f' );
+ INSERT INTO entity VALUES( 'pg_enum', 'f' );
+ INSERT INTO entity VALUES( 'pg_namespace', 'f' );
+ INSERT INTO entity VALUES( 'pg_conversion', 'f' );
+ INSERT INTO entity VALUES( 'pg_depend', 'f' );
+ INSERT INTO entity VALUES( 'pg_database', 'f' );
+ INSERT INTO entity VALUES( 'pg_db_role_setting', 'f' );
+ INSERT INTO entity VALUES( 'pg_tablespace', 'f' );
+ INSERT INTO entity VALUES( 'pg_pltemplate', 'f' );
+ INSERT INTO entity VALUES( 'pg_auth_members', 'f' );
+ INSERT INTO entity VALUES( 'pg_shdepend', 'f' );
+ INSERT INTO entity VALUES( 'pg_shdescription', 'f' );
+ INSERT INTO entity VALUES( 'pg_ts_config', 'f' );
+ INSERT INTO entity VALUES( 'pg_ts_config_map', 'f' );
+ INSERT INTO entity VALUES( 'pg_ts_dict', 'f' );
+ INSERT INTO entity VALUES( 'pg_ts_parser', 'f' );
+ INSERT INTO entity VALUES( 'pg_ts_template', 'f' );
+ INSERT INTO entity VALUES( 'pg_extension', 'f' );
+ INSERT INTO entity VALUES( 'pg_foreign_data_wrapper', 'f' );
+ INSERT INTO entity VALUES( 'pg_foreign_server', 'f' );
+ INSERT INTO entity VALUES( 'pg_foreign_table', 'f' );
+ INSERT INTO entity VALUES( 'pg_policy', 'f' );
+ INSERT INTO entity VALUES( 'pg_replication_origin', 'f' );
+ INSERT INTO entity VALUES( 'pg_default_acl', 'f' );
+ INSERT INTO entity VALUES( 'pg_seclabel', 'f' );
+ INSERT INTO entity VALUES( 'pg_shseclabel', 'f' );
+ INSERT INTO entity VALUES( 'pg_collation', 'f' );
+ INSERT INTO entity VALUES( 'pg_range', 'f' );
+ INSERT INTO entity VALUES( 'pg_transform', 'f' );
+ INSERT INTO entity VALUES( 'pg_policies', 'f' );
+ INSERT INTO entity VALUES( 'pg_rules', 'f' );
+ INSERT INTO entity VALUES( 'pg_matviews', 'f' );
+ INSERT INTO entity VALUES( 'pg_stats', 't' );
+ INSERT INTO entity VALUES( 'pg_locks', 'f' );
+ INSERT INTO entity VALUES( 'pg_cursors', 'f' );
+ INSERT INTO entity VALUES( 'pg_available_extensions', 'f' );
+ INSERT INTO entity VALUES( 'pg_available_extension_versions', 'f' );
+ INSERT INTO entity VALUES( 'pg_prepared_xacts', 'f' );
+ INSERT INTO entity VALUES( 'pg_prepared_statements', 'f' );
+ INSERT INTO entity VALUES( 'pg_seclabels', 'f' );
+ INSERT INTO entity VALUES( 'pg_stat_xact_sys_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_timezone_abbrevs', 'f' );
+ INSERT INTO entity VALUES( 'pg_timezone_names', 'f' );
+ INSERT INTO entity VALUES( 'pg_stat_user_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_all_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_xact_all_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_sys_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_xact_user_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_all_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_sys_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_user_tables', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_all_indexes', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_sys_indexes', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_user_indexes', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_all_indexes', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_sys_indexes', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_user_indexes', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_all_sequences', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_sys_sequences', 't' );
+ INSERT INTO entity VALUES( 'pg_statio_user_sequences', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_activity', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_replication', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_wal_receiver', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_ssl', 't' );
+ INSERT INTO entity VALUES( 'pg_replication_slots', 'f' );
+ INSERT INTO entity VALUES( 'pg_stat_database', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_database_conflicts', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_user_functions', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_xact_user_functions', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_archiver', 't' );
+

@@ -2,9 +2,11 @@ SET log_min_messages = WARNING;
 SET client_min_messages = WARNING;
 CREATE EXTENSION IF NOT EXISTS cat_tools;
 
-COPY (
-SELECT relname::text AS entity
-    , relname ~ '^pg_stat' AS stat
+SELECT format(
+      $$INSERT INTO entity VALUES( %L, %L );$$
+      ,relname::text
+      , relname ~ '^pg_stat'
+    )
   FROM _cat_tools.pg_class_v r
   WHERE relschema='pg_catalog'
     AND (
@@ -15,7 +17,6 @@ SELECT relname::text AS entity
               OR relname !~ '^pg_(group|indexes|shadow|tables|user|views)'
           ) )
       )
-) TO STDOUT
 ;
 
 
