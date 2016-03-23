@@ -1,10 +1,4 @@
 \set ECHO none
-          List of relations
-  Schema  |  Name  | Type  |  Owner  
-----------+--------+-------+---------
- cat_snap | entity | table | decibel
-(1 row)
-
    Table "cat_snap.entity"
  Column |  Type   | Modifiers 
 --------+---------+-----------
