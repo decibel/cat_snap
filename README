@@ -1,0 +1,6 @@
+This extension makes heavy use of metaprogramming. The following directories
+and their contents have special meaning:
+
+meta/: Used to build the files that go into the generated/
+build/: Files used during normal build process
+sql/: Some files here are generated from files in build/
