@@ -36,7 +36,8 @@ SELECT
  */
 SELECT
     relname::text
-    , relname ~ '^pg_stat' AS is_stat
+    -- The replication views have stats in them
+    , relname ~ '^pg_(stat|replication)' AS is_stat
     , array_agg(
         row(
           attname
