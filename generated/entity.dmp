@@ -14,7 +14,7 @@ CREATE TABLE entity(
  INSERT INTO entity VALUES( 'pg_user_mapping', 'f' );
  INSERT INTO entity VALUES( 'pg_stat_bgwriter', 't' );
  INSERT INTO entity VALUES( 'pg_replication_origin_status', 'f' );
- INSERT INTO entity VALUES( 'pg_largeobject', 'f' );
+ INSERT INTO entity VALUES( 'pg_stat_progress_vacuum', 't' );
  INSERT INTO entity VALUES( 'pg_attribute', 'f' );
  INSERT INTO entity VALUES( 'pg_proc', 'f' );
  INSERT INTO entity VALUES( 'pg_class', 'f' );
@@ -36,6 +36,7 @@ CREATE TABLE entity(
  INSERT INTO entity VALUES( 'pg_event_trigger', 'f' );
  INSERT INTO entity VALUES( 'pg_description', 'f' );
  INSERT INTO entity VALUES( 'pg_cast', 'f' );
+ INSERT INTO entity VALUES( 'pg_largeobject', 'f' );
  INSERT INTO entity VALUES( 'pg_enum', 'f' );
  INSERT INTO entity VALUES( 'pg_namespace', 'f' );
  INSERT INTO entity VALUES( 'pg_conversion', 'f' );

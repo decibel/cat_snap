@@ -6,7 +6,7 @@ SELECT plan(2);
 
 SELECT is(
   (SELECT count(*)::int FROM cat_snap.entity)
-  , 99
+  , 100
   , 'Number of entities'
 );
 
