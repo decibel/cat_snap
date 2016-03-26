@@ -8,7 +8,10 @@ SELECT format(
       , relname ~ '^pg_stat'
     )
   FROM _cat_tools.pg_class_v r
-  WHERE relschema='pg_catalog'
+  WHERE
+    relname = 'pg_stat_statements'
+    OR (
+      relschema='pg_catalog'
     AND (
         ( relkind = 'r' AND relname !~ '^pg_(authid|statistic)' )
         OR ( relkind = 'v' AND (
@@ -17,6 +20,7 @@ SELECT format(
               OR relname !~ '^pg_(group|indexes|shadow|tables|user|views)'
           ) )
       )
+    )
   ORDER BY relname
 ;
 

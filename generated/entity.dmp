@@ -74,6 +74,7 @@ CREATE TABLE entity(
  INSERT INTO entity VALUES( 'pg_stat_progress_vacuum', 't' );
  INSERT INTO entity VALUES( 'pg_stat_replication', 't' );
  INSERT INTO entity VALUES( 'pg_stat_ssl', 't' );
+ INSERT INTO entity VALUES( 'pg_stat_statements', 't' );
  INSERT INTO entity VALUES( 'pg_stat_sys_indexes', 't' );
  INSERT INTO entity VALUES( 'pg_stat_sys_tables', 't' );
  INSERT INTO entity VALUES( 'pg_stat_user_functions', 't' );
