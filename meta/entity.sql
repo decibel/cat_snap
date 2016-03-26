@@ -17,6 +17,7 @@ SELECT format(
               OR relname !~ '^pg_(group|indexes|shadow|tables|user|views)'
           ) )
       )
+  ORDER BY relname
 ;
 
 
