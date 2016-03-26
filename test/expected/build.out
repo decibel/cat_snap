@@ -1,9 +1,13 @@
 \set ECHO none
-   Table "cat_snap.entity"
- Column |  Type   | Modifiers 
---------+---------+-----------
- entity | text    | not null
- stat   | boolean | not null
+           Table "cat_snap.entity"
+      Column       |    Type     | Modifiers 
+-------------------+-------------+-----------
+ entity            | text        | not null
+ is_stat           | boolean     | not null
+ attributes        | attribute[] | not null
+ subtract_keys     | text[]      | 
+ subtract_counters | text[]      | 
+ subtract_fields   | text[]      | 
 Indexes:
     "entity_pkey" PRIMARY KEY, btree (entity)
 

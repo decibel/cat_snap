@@ -1,37 +1,51 @@
 SET log_min_messages = WARNING;
 SET client_min_messages = WARNING;
+BEGIN;
 CREATE EXTENSION IF NOT EXISTS cat_tools;
+
+-- See also entity.sh if you change this
+CREATE TYPE attribute AS( attribute_name text, attribute_type regtype );
 
 SELECT format(
       $$INSERT INTO entity VALUES( %L, %L, %L, %L, %L, %L );$$
       , relname
       , is_stat
       , attributes
-      , attribute_types
-      , CASE WHEN is_stat THEN
-          CASE WHEN relname = 'pg_stat_statements' THEN subtract_keys || array['queryid'] ELSE subtract_keys END
-        END
+      , CASE WHEN is_stat THEN subtract_keys END
       , CASE WHEN is_stat THEN subtract_counters END
       , CASE WHEN is_stat THEN subtract_fields END
     )
   FROM (
 /*
- * Get all catalog and stat entries, along with details of their attributes and
- * how to subtract
+ * Add details of how to subtract
+ */
+SELECT
+    *
+    , array( SELECT (a).attribute_name FROM unnest(attributes) a WHERE attribute_type = 'oid'::regtype ) AS subtract_keys
+    , array(
+        SELECT (a).attribute_name FROM unnest(attributes) a
+        WHERE attribute_type IN ('bigint'::regtype, 'double precision')
+      ) AS subtract_counters
+    , array(
+        SELECT (a).attribute_name FROM unnest(attributes) a
+        WHERE attribute_type IN ('timestamptz'::regtype)
+      ) AS subtract_fields
+  FROM (
+/*
+ * Get all catalog and stat entries, along with details of their attributes
  */
 SELECT
     relname::text
     , relname ~ '^pg_stat' AS is_stat
-    , array_agg(attname) AS attributes
     , array_agg(
-        CASE
-          WHEN column_type IN ( 'name', 'anyarray' ) THEN 'text'
-          ELSE column_type
-        END
-      ) AS attribute_types
-    , array_agg( CASE WHEN attname = 'oid' THEN attname::text END ) AS subtract_keys
-    , array_agg( CASE WHEN column_type IN ( 'double precision', 'bigint' ) THEN attname::text END ) AS subtract_counters
-    , array_agg( CASE WHEN column_type IN ( 'timestamp with timezone' ) THEN attname::text END ) AS subtract_fields
+        row(
+          attname
+          , CASE
+            WHEN column_type IN ( 'name', 'anyarray' ) THEN 'text'
+            ELSE column_type
+          END
+        )::attribute
+      ) AS attributes
   FROM _cat_tools.column c
   WHERE
     relname = 'pg_stat_statements'
@@ -48,7 +62,9 @@ SELECT
     )
   GROUP BY relname
 ) a
+) a
   ORDER BY relname
 ;
+ROLLBACK;
 
 -- vi: expandtab ts=2 sw=2
