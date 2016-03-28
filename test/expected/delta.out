@@ -1,0 +1,5 @@
+\set ECHO none
+1..2
+ok 1 - Check delta results
+ok 2 - Verify key equality check works
+# TRANSACTION INTENTIONALLY LEFT OPEN!
