@@ -1,5 +1,7 @@
 \set ECHO none
-1..2
+1..4
 ok 1 - Number of entities
 ok 2 - Verify types
+ok 3 - Verify queryid exists in pg_stat_statements delta_keys
+ok 4 - Verify waiting exists in pg_stat_activity attributes
 # TRANSACTION INTENTIONALLY LEFT OPEN!

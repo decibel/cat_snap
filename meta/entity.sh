@@ -13,6 +13,7 @@ CREATE TABLE entity(
 	entity				text		NOT NULL PRIMARY KEY
 	, entity_type		entity_type	NOT NULL
 	, attributes		attribute[]	NOT NULL
+	, extra_attributes	attribute[]
 	, delta_keys		text[]		
 	, delta_counters	text[]		
 	, delta_fields	text[]		
@@ -26,7 +27,7 @@ _EOF_
 psql -qt -v ON_ERROR_STOP=1 -f meta/entity.sql || exit 1
 
 cat << _EOF_
-UPDATE entity SET delta_keys = delta_keys || array['queryid'] WHERE entity = 'pg_stat_statements';
+UPDATE entity SET delta_keys = delta_keys || array['queryid'] WHERE entity = 'pg_stat_statements' AND NOT delta_keys @> array['queryid'];
 _EOF_
 
 # vi: noexpandtab ts=4 sw=4

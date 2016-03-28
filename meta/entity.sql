@@ -2,15 +2,25 @@ SET log_min_messages = WARNING;
 SET client_min_messages = WARNING;
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS cat_tools;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 -- See also entity.sh if you change this
 CREATE TYPE attribute AS( attribute_name text, attribute_type regtype );
 
+CREATE TABLE extra(
+  relname text NOT NULL PRIMARY KEY
+  , extra_attributes attribute[] NOT NULL
+);
+INSERT INTO extra VALUES
+  ( 'pg_stat_activity', array[ row('waiting', 'boolean')::attribute ] )
+;
+
 SELECT format(
-      $$INSERT INTO entity VALUES( %L, %L, %L, %L, %L, %L );$$
+      $$INSERT INTO entity VALUES( %L, %L, %L, %L, %L, %L, %L );$$
       , relname
       , entity_type
       , attributes
+      , extra_attributes
       , CASE WHEN entity_type = 'Stats File' THEN delta_keys END
       , CASE WHEN entity_type = 'Stats File' THEN delta_counters END
       , CASE WHEN entity_type = 'Stats File' THEN delta_fields END
@@ -80,6 +90,7 @@ SELECT
     )
 ) a
 ) a
+    LEFT JOIN extra USING( relname )
   ORDER BY relname
 ;
 ROLLBACK;

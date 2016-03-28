@@ -1,7 +1,7 @@
 -- THIS IS A GENERATED FILE. DO NOT EDIT!
 
 CREATE TYPE raw_aggregate AS (xmin xid, aggfnoid regproc, aggkind "char", aggnumdirectargs smallint, aggtransfn regproc, aggfinalfn regproc, aggcombinefn regproc, aggmtransfn regproc, aggminvtransfn regproc, aggmfinalfn regproc, aggfinalextra boolean, aggmfinalextra boolean, aggsortop oid, aggtranstype oid, aggtransspace integer, aggmtranstype oid, aggmtransspace integer, agginitval text, aggminitval text);
-CREATE TYPE raw_am AS (xmin xid, oid oid, amname text, amhandler regproc);
+CREATE TYPE raw_am AS (xmin xid, oid oid, amname text, amhandler regproc, amtype "char");
 CREATE TYPE raw_amop AS (xmin xid, oid oid, amopfamily oid, amoplefttype oid, amoprighttype oid, amopstrategy smallint, amoppurpose "char", amopopr oid, amopmethod oid, amopsortfamily oid);
 CREATE TYPE raw_amproc AS (xmin xid, oid oid, amprocfamily oid, amproclefttype oid, amprocrighttype oid, amprocnum smallint, amproc regproc);
 CREATE TYPE raw_attrdef AS (xmin xid, oid oid, adrelid oid, adnum smallint, adbin pg_node_tree, adsrc text);

@@ -4,15 +4,16 @@
     33
 (1 row)
 
-         Table "_cat_snap.entity"
-     Column     |    Type     | Modifiers 
-----------------+-------------+-----------
- entity         | text        | not null
- entity_type    | entity_type | not null
- attributes     | attribute[] | not null
- delta_keys     | text[]      | 
- delta_counters | text[]      | 
- delta_fields   | text[]      | 
+          Table "_cat_snap.entity"
+      Column      |    Type     | Modifiers 
+------------------+-------------+-----------
+ entity           | text        | not null
+ entity_type      | entity_type | not null
+ attributes       | attribute[] | not null
+ extra_attributes | attribute[] | 
+ delta_keys       | text[]      | 
+ delta_counters   | text[]      | 
+ delta_fields     | text[]      | 
 Indexes:
     "entity_pkey" PRIMARY KEY, btree (entity)
 
