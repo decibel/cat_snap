@@ -7,5 +7,7 @@ SET search_path = cat_snap;
 
 _EOF_
 
+echo '-- THIS IS A GENERATED FILE. DO NOT EDIT!'
 cat generated/entity.dmp
+echo '-- THIS IS A GENERATED FILE. DO NOT EDIT!'
 cat generated/types.sql
