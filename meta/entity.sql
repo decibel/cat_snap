@@ -7,7 +7,8 @@ CREATE EXTENSION IF NOT EXISTS cat_tools;
 CREATE TYPE attribute AS( attribute_name text, attribute_type regtype );
 
 SELECT format(
-      $$INSERT INTO entity VALUES( %L, %L, %L, %L, %L, %L );$$
+      $$INSERT INTO entity VALUES( %L, %L, %L, %L, %L, %L, %L );$$
+      , substring(version() from '[0-9]+\.[0-9]+')
       , relname
       , entity_type
       , attributes
