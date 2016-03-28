@@ -14,6 +14,7 @@ SELECT types_are(
   'cat_snap'
   , array( SELECT replace( entity, 'pg_', 'raw_' )::name FROM cat_snap.entity )
     || array[ 'attribute'::name, 'entity_type' ]
+    || array( SELECT replace( entity, 'pg_', 'delta_' )::name FROM cat_snap.entity WHERE entity_type = 'Stats File' )
   , 'Verify types'
 );
 

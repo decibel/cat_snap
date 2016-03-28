@@ -31,8 +31,7 @@ DECLARE
 BEGIN
   -- First, build the set of comparisons
   operations := array(
-      SELECT logic FROM (
-      SELECT CASE
+    SELECT CASE
         WHEN array[attribute_name] <@ subtract_keys THEN
           format(
             $$_cat_snap.verify_equal( (a).%1$I, (b).%1$I, %1$L || 'must match' )$$
@@ -52,20 +51,31 @@ BEGIN
           )
         END AS logic
       FROM unnest(attributes) a
-    ) l
-    WHERE logic IS NOT NULL
   );
+
+  -- Add intervals for any timestamps
+  operations := operations || array(
+    SELECT
+        format(
+          $$(a).%1$I - (b).%1$I$$
+          , attribute_name
+        )
+      FROM unnest(attributes) a
+      WHERE attribute_type::text ~ '^timestamp with'
+  );
+
   RETURN format(
 $template$
 CREATE FUNCTION _cat_snap.subtract(
   a cat_snap.%1$s
   , b cat_snap.%1$s
-) RETURNS cat_snap.%1$s LANGUAGE sql IMMUTABLE STRICT AS $subtract$
-SELECT %s
+) RETURNS cat_snap.%3$s LANGUAGE sql IMMUTABLE STRICT AS $subtract$
+SELECT %2$s
 $subtract$;
 $template$
     , typename
     , array_to_string( operations, E'\n  , ' )
+    , replace( typename, 'raw_', 'delta_' )
   );
 END
 $body$;
