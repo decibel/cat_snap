@@ -1,9 +1,14 @@
 \set ECHO none
+ count 
+-------
+    33
+(1 row)
+
            Table "cat_snap.entity"
       Column       |    Type     | Modifiers 
 -------------------+-------------+-----------
  entity            | text        | not null
- is_stat           | boolean     | not null
+ entity_type       | entity_type | not null
  attributes        | attribute[] | not null
  subtract_keys     | text[]      | 
  subtract_counters | text[]      | 
@@ -14,6 +19,7 @@ Indexes:
     Composite type "cat_snap.raw_type"
      Column     |     Type     | Modifiers 
 ----------------+--------------+-----------
+ xmin           | xid          | 
  oid            | oid          | 
  typname        | text         | 
  typnamespace   | oid          | 
