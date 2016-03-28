@@ -5,7 +5,7 @@
 BEGIN;
 \i sql/cat_snap.sql
 
-\d cat_snap.entity
+\d _cat_snap.entity
 \d cat_snap.raw_type
 
 \echo # TRANSACTION INTENTIONALLY LEFT OPEN!

@@ -14,7 +14,7 @@ CREATE FUNCTION _cat_snap.verify_equal(
 ) RETURNS anyelement LANGUAGE sql IMMUTABLE AS $body$
 SELECT CASE WHEN a IS DISTINCT FROM b THEN
   -- This case is here just to get return types to agree. throw() always returns false
-  CASE WHEN _cat_snap.throw(message) THEN NULL END
+  CASE WHEN _cat_snap.throw(message) THEN a END
   ELSE a
   END
 $body$;
@@ -34,7 +34,7 @@ BEGIN
     SELECT CASE
         WHEN array[attribute_name] <@ delta_keys THEN
           format(
-            $$_cat_snap.verify_equal( (a).%1$I, (b).%1$I, %1$L || 'must match' )$$
+            $$_cat_snap.verify_equal( (a).%1$I, (b).%1$I, %1$L || ' must match' )$$
             , attribute_name
           )
         -- TODO: Replace counter deltaion with real logic
@@ -66,7 +66,7 @@ BEGIN
 
   RETURN format(
 $template$
-CREATE FUNCTION _cat_snap.delta(
+CREATE FUNCTION cat_snap.delta(
   a cat_snap.%1$s
   , b cat_snap.%1$s
 ) RETURNS cat_snap.%3$s LANGUAGE sql IMMUTABLE STRICT AS $delta$
@@ -91,7 +91,7 @@ $$;
 SELECT count( pg_temp.exec( _cat_snap.delta_code(
       replace(entity, 'pg_', 'raw_'), attributes, delta_keys, delta_counters, delta_fields
     ) ) )
-  FROM cat_snap.entity
+  FROM _cat_snap.entity
   WHERE entity_type = 'Stats File'
 ;
 /*

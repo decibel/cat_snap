@@ -4,7 +4,7 @@
     33
 (1 row)
 
-         Table "cat_snap.entity"
+         Table "_cat_snap.entity"
      Column     |    Type     | Modifiers 
 ----------------+-------------+-----------
  entity         | text        | not null
