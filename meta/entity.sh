@@ -20,4 +20,8 @@ _EOF_
 
 psql -qt -v ON_ERROR_STOP=1 -f meta/entity.sql || exit 1
 
+cat << _EOF_
+UPDATE entity SET subtract_keys = subtract_keys || array['queryid'] WHERE entity = 'pg_stat_statements';
+_EOF_
+
 # vi: noexpandtab ts=4 sw=4
