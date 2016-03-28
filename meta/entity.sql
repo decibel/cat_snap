@@ -9,11 +9,11 @@ CREATE TYPE attribute AS( attribute_name text, attribute_type regtype );
 SELECT format(
       $$INSERT INTO entity VALUES( %L, %L, %L, %L, %L, %L );$$
       , relname
-      , is_stat
+      , entity_type
       , attributes
-      , CASE WHEN is_stat THEN subtract_keys END
-      , CASE WHEN is_stat THEN subtract_counters END
-      , CASE WHEN is_stat THEN subtract_fields END
+      , CASE WHEN entity_type = 'Stats File' THEN subtract_keys END
+      , CASE WHEN entity_type = 'Stats File' THEN subtract_counters END
+      , CASE WHEN entity_type = 'Stats File' THEN subtract_fields END
     )
   FROM (
 /*
@@ -28,7 +28,7 @@ SELECT
       ) AS subtract_counters
     , array(
         SELECT (a).attribute_name FROM unnest(attributes) a
-        WHERE attribute_type IN ('timestamptz'::regtype)
+        WHERE FALSE --attribute_type IN ('timestamptz'::regtype)
       ) AS subtract_fields
   FROM (
 /*
@@ -36,32 +36,48 @@ SELECT
  */
 SELECT
     relname::text
-    -- The replication views have stats in them
-    , relname ~ '^pg_(stat|replication)' AS is_stat
-    , array_agg(
-        row(
-          attname
-          , CASE
-            WHEN column_type IN ( 'name', 'anyarray' ) THEN 'text'
-            ELSE column_type
-          END
-        )::attribute
+    /*
+     * The replication views have stats in them. pg_replication_origin is a
+     * table and we don't want to treat it as stats, hence the check on
+     * relkind.
+     */
+    , CASE WHEN relkind = 'v' THEN
+        CASE WHEN relname ~ '^pg_(stat|replication)' THEN 'Stats File'
+        ELSE 'Other Status'
+        END
+      ELSE 'Catalog'
+      END AS entity_type
+    , array(
+      SELECT
+          row(
+            attname
+            , CASE
+              WHEN column_type IN ( 'name', 'anyarray' ) THEN 'text'
+              ELSE column_type
+            END
+          )::attribute
+        FROM _cat_tools.column cc
+        WHERE cc.reloid = c.reloid
+          AND ( attnum>0 OR attname IN( 'xmin', 'oid' ) )
+          AND NOT attisdropped -- Be paranoid...
+        ORDER BY attnum
       ) AS attributes
-  FROM _cat_tools.column c
+  FROM _cat_tools.pg_class_v c
   WHERE
-    relname = 'pg_stat_statements'
-    OR (
-      relschema='pg_catalog'
-      AND (
-          ( relkind = 'r' AND relname !~ '^pg_(authid|statistic)' )
-          OR ( relkind = 'v' AND (
-                relname = 'pg_stat_user_functions' 
-                OR ( relname ~ '^pg_stat' AND relname !~ '_(user|sys)_' )
-                OR relname !~ '^pg_(group|indexes|shadow|tables|user|views)'
-          ) )
+    (
+      relname = 'pg_stat_statements'
+      OR (
+        relschema='pg_catalog'
+        AND (
+            ( relkind = 'r' AND relname !~ '^pg_(authid|statistic)' )
+            OR ( relkind = 'v' AND (
+                  relname = 'pg_stat_user_functions' 
+                  OR ( relname ~ '^pg_stat' AND relname !~ '_(user|sys)_' )
+                  OR relname !~ '^pg_(group|indexes|shadow|tables|user|views)'
+            ) )
+        )
       )
     )
-  GROUP BY relname
 ) a
 ) a
   ORDER BY relname

@@ -32,5 +32,6 @@ generated/%.dmp: meta/%.sh meta/%* cat_tools
 genclean:
 	@rm -f $(GENERATED)
 
-sql/%.sql: build/%.sh $(GENERATED)
+BUILD_SCRIPTS = $(wildcard build/*.sql)
+sql/%.sql: build/%.sh $(GENERATED) $(BUILD_SCRIPTS)
 	$< > $@

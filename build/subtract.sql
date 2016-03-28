@@ -19,38 +19,42 @@ SELECT CASE WHEN a IS DISTINCT FROM b THEN
   END
 $body$;
 
-CREATE FUNCTION pg_temp.subtract_code(
+CREATE FUNCTION _cat_snap.subtract_code(
   typename text
   , attributes attribute[]
   , subtract_keys text[]
   , subtract_counters text[]
   , subtract_fields text[]
-) RETURNS text LANGUAGE plpgqsl AS $body$
+) RETURNS text SET search_path FROM CURRENT LANGUAGE plpgsql AS $body$
 DECLARE
-  logic text[];
+  operations text[];
 BEGIN
   -- First, build the set of comparisons
-  logic := array(
-    SELECT logic FROM (
-    SELECT CASE
-      WHEN attribute_name <@ subtract_keys THEN
-        format(
-          $$_cat_snap.verify_equal( (a).%1$I, (b).%1$I, %1$L || 'must match' )$$
-          , attribute_name
-        )
-      -- TODO: Replace counter subtraction with real logic
-      WHEN attribute_name <@ subtract_counters
-        OR attribute_name <@ subtract_fields
-        THEN
-        format(
-          $$(a).%1$I - (b).%1$I$$
-          , attribute_name
-        )
-      END AS logic
-    FROM unnest(attributes) a
-  ) l
-  WHERE logic IS NOT NULL
-  ;
+  operations := array(
+      SELECT logic FROM (
+      SELECT CASE
+        WHEN array[attribute_name] <@ subtract_keys THEN
+          format(
+            $$_cat_snap.verify_equal( (a).%1$I, (b).%1$I, %1$L || 'must match' )$$
+            , attribute_name
+          )
+        -- TODO: Replace counter subtraction with real logic
+        WHEN array[attribute_name] <@ subtract_counters
+          OR array[attribute_name] <@ subtract_fields
+          THEN
+          format(
+            $$(a).%1$I - (b).%1$I$$
+            , attribute_name
+          )
+        ELSE format(
+            $$(a).%I$$
+            , attribute_name
+          )
+        END AS logic
+      FROM unnest(attributes) a
+    ) l
+    WHERE logic IS NOT NULL
+  );
   RETURN format(
 $template$
 CREATE FUNCTION _cat_snap.subtract(
@@ -61,9 +65,25 @@ SELECT %s
 $subtract$;
 $template$
     , typename
-    , array_to_string( logic, E'\n  , ' )
+    , array_to_string( operations, E'\n  , ' )
   );
 END
 $body$;
 
+CREATE FUNCTION pg_temp.exec(
+  sql text
+) RETURNS void LANGUAGE plpgsql AS $$
+BEGIN
+  EXECUTE sql;
+END
+$$;
+
+SELECT count( pg_temp.exec( _cat_snap.subtract_code(
+      replace(entity, 'pg_', 'raw_'), attributes, subtract_keys, subtract_counters, subtract_fields
+    ) ) )
+  FROM cat_snap.entity
+  WHERE entity_type = 'Stats File'
+;
+/*
+*/
 -- vi: expandtab ts=2 sw=2
