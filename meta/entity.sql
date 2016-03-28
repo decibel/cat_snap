@@ -11,25 +11,25 @@ SELECT format(
       , relname
       , entity_type
       , attributes
-      , CASE WHEN entity_type = 'Stats File' THEN subtract_keys END
-      , CASE WHEN entity_type = 'Stats File' THEN subtract_counters END
-      , CASE WHEN entity_type = 'Stats File' THEN subtract_fields END
+      , CASE WHEN entity_type = 'Stats File' THEN delta_keys END
+      , CASE WHEN entity_type = 'Stats File' THEN delta_counters END
+      , CASE WHEN entity_type = 'Stats File' THEN delta_fields END
     )
   FROM (
 /*
- * Add details of how to subtract
+ * Add details of how to delta
  */
 SELECT
     *
-    , array( SELECT (a).attribute_name FROM unnest(attributes) a WHERE attribute_type = 'oid'::regtype ) AS subtract_keys
+    , array( SELECT (a).attribute_name FROM unnest(attributes) a WHERE attribute_type = 'oid'::regtype ) AS delta_keys
     , array(
         SELECT (a).attribute_name FROM unnest(attributes) a
         WHERE attribute_type IN ('bigint'::regtype, 'double precision')
-      ) AS subtract_counters
+      ) AS delta_counters
     , array(
         SELECT (a).attribute_name FROM unnest(attributes) a
         WHERE FALSE --attribute_type IN ('timestamptz'::regtype)
-      ) AS subtract_fields
+      ) AS delta_fields
   FROM (
 /*
  * Get all catalog and stat entries, along with details of their attributes

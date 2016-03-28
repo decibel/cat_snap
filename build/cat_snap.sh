@@ -13,4 +13,4 @@ cat generated/entity.dmp
 echo '-- THIS IS A GENERATED FILE. DO NOT EDIT!'
 cat generated/types.sql
 echo '-- THIS IS A GENERATED FILE. DO NOT EDIT!'
-cat build/subtract.sql
+cat build/delta.sql

@@ -13,7 +13,7 @@ CREATE TEMP VIEW entity_v AS
             ) AS base
         , array(
             SELECT attribute_name
-                    || CASE WHEN array[attribute_name] <@ (e.subtract_counters || e.subtract_fields) THEN '_d' ELSE '' END
+                    || CASE WHEN array[attribute_name] <@ (e.delta_counters || e.delta_fields) THEN '_d' ELSE '' END
                     || ' '
                     || attribute_type
                 FROM unnest(e.attributes)

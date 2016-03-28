@@ -12,14 +12,14 @@ CREATE TABLE entity(
 	entity				text		NOT NULL PRIMARY KEY
 	, entity_type		entity_type	NOT NULL
 	, attributes		attribute[]	NOT NULL
-	, subtract_keys		text[]		
-	, subtract_counters	text[]		
-	, subtract_fields	text[]		
+	, delta_keys		text[]		
+	, delta_counters	text[]		
+	, delta_fields	text[]		
 );
 
-COMMENT ON COLUMN entity.subtract_keys IS 'Fields used to verify that two stat types that are being subtracted from each other refer to the same entity.';
-COMMENT ON COLUMN entity.subtract_fields IS 'Fields that are counters. These can not be subtracted normally; they require special logic.';
-COMMENT ON COLUMN entity.subtract_fields IS 'Fields to subtract when performing subtraction.';
+COMMENT ON COLUMN entity.delta_keys IS 'Fields used to verify that two stat types that are being deltaed from each other refer to the same entity.';
+COMMENT ON COLUMN entity.delta_fields IS 'Fields that are counters. These can not be deltaed normally; they require special logic.';
+COMMENT ON COLUMN entity.delta_fields IS 'Fields to delta when performing deltaion.';
  INSERT INTO entity VALUES( 'pg_aggregate', 'Catalog', E'{"(xmin,xid)","(aggfnoid,regproc)","(aggkind,\\"\\"\\"char\\"\\"\\")","(aggnumdirectargs,smallint)","(aggtransfn,regproc)","(aggfinalfn,regproc)","(aggcombinefn,regproc)","(aggmtransfn,regproc)","(aggminvtransfn,regproc)","(aggmfinalfn,regproc)","(aggfinalextra,boolean)","(aggmfinalextra,boolean)","(aggsortop,oid)","(aggtranstype,oid)","(aggtransspace,integer)","(aggmtranstype,oid)","(aggmtransspace,integer)","(agginitval,text)","(aggminitval,text)"}', NULL, NULL, NULL );
  INSERT INTO entity VALUES( 'pg_am', 'Catalog', '{"(xmin,xid)","(oid,oid)","(amname,text)","(amhandler,regproc)"}', NULL, NULL, NULL );
  INSERT INTO entity VALUES( 'pg_amop', 'Catalog', E'{"(xmin,xid)","(oid,oid)","(amopfamily,oid)","(amoplefttype,oid)","(amoprighttype,oid)","(amopstrategy,smallint)","(amoppurpose,\\"\\"\\"char\\"\\"\\")","(amopopr,oid)","(amopmethod,oid)","(amopsortfamily,oid)"}', NULL, NULL, NULL );
@@ -122,4 +122,4 @@ COMMENT ON COLUMN entity.subtract_fields IS 'Fields to subtract when performing 
  INSERT INTO entity VALUES( 'pg_type', 'Catalog', E'{"(xmin,xid)","(oid,oid)","(typname,text)","(typnamespace,oid)","(typowner,oid)","(typlen,smallint)","(typbyval,boolean)","(typtype,\\"\\"\\"char\\"\\"\\")","(typcategory,\\"\\"\\"char\\"\\"\\")","(typispreferred,boolean)","(typisdefined,boolean)","(typdelim,\\"\\"\\"char\\"\\"\\")","(typrelid,oid)","(typelem,oid)","(typarray,oid)","(typinput,regproc)","(typoutput,regproc)","(typreceive,regproc)","(typsend,regproc)","(typmodin,regproc)","(typmodout,regproc)","(typanalyze,regproc)","(typalign,\\"\\"\\"char\\"\\"\\")","(typstorage,\\"\\"\\"char\\"\\"\\")","(typnotnull,boolean)","(typbasetype,oid)","(typtypmod,integer)","(typndims,integer)","(typcollation,oid)","(typdefaultbin,pg_node_tree)","(typdefault,text)","(typacl,aclitem[])"}', NULL, NULL, NULL );
  INSERT INTO entity VALUES( 'pg_user_mapping', 'Catalog', '{"(xmin,xid)","(oid,oid)","(umuser,oid)","(umserver,oid)","(umoptions,text[])"}', NULL, NULL, NULL );
 
-UPDATE entity SET subtract_keys = subtract_keys || array['queryid'] WHERE entity = 'pg_stat_statements';
+UPDATE entity SET delta_keys = delta_keys || array['queryid'] WHERE entity = 'pg_stat_statements';
