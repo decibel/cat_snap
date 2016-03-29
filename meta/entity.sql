@@ -52,7 +52,7 @@ SELECT
      * relkind.
      */
     , CASE WHEN relkind = 'v' THEN
-        CASE WHEN relname ~ '^pg_(stat|replication)' THEN 'Stats File'
+        CASE WHEN relname ~ '^pg_(stat|replication)' AND relname != 'pg_stat_activity' THEN 'Stats File'
         ELSE 'Other Status'
         END
       ELSE 'Catalog'

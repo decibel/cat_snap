@@ -9,7 +9,7 @@ CREATE TEMP VIEW entity_v AS
     SELECT *
         , array(
             SELECT attribute_name || ' ' || attribute_type
-                FROM unnest(e.attributes)
+                FROM unnest(e.attributes || e.extra_attributes)
             ) AS base
         , array(
             SELECT attribute_name

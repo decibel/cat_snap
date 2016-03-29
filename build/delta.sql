@@ -89,7 +89,7 @@ END
 $$;
 
 SELECT count( pg_temp.exec( _cat_snap.delta_code(
-      replace(entity, 'pg_', 'raw_'), attributes, delta_keys, delta_counters, delta_fields
+      replace(entity, 'pg_', 'raw_'), attributes || extra_attributes, delta_keys, delta_counters, delta_fields
     ) ) )
   FROM _cat_snap.entity
   WHERE entity_type = 'Stats File'
