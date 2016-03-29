@@ -1,7 +1,12 @@
 \set ECHO none
-1..4
+1..9
 ok 1 - Number of entities
 ok 2 - Verify types
 ok 3 - Verify queryid exists in pg_stat_statements delta_keys
 ok 4 - Verify waiting exists in pg_stat_activity attributes
+ok 5 - Verify gather code for 9.2 pg_stat_activity
+ok 6 - Verify gather code for 9.3 pg_stat_activity
+ok 7 - Verify gather code for 9.4 pg_stat_activity
+ok 8 - Verify gather code for 9.5 pg_stat_activity
+ok 9 - Verify gather code for 9.6 pg_stat_activity
 # TRANSACTION INTENTIONALLY LEFT OPEN!

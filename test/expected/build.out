@@ -1,7 +1,7 @@
 \set ECHO none
  count 
 -------
-    33
+    32
 (1 row)
 
           Table "_cat_snap.entity"
