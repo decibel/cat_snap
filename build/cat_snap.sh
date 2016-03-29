@@ -21,6 +21,8 @@ echo '-- Generated from generated/types.sql'
 echo 'SET search_path = cat_snap, _cat_snap;'
 cat generated/types.sql
 
+echo_cat generated/catalog.dmp
+
 echo_cat build/delta.sql
 
 # vi: expandtab ts=2 sw=2

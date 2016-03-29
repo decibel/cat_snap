@@ -4,7 +4,7 @@ cat_tools: $(DESTDIR)$(datadir)/extension/cat_tools.control
 $(DESTDIR)$(datadir)/extension/cat_tools.control:
 	pgxn install cat_tools
 
-GENERATED = generated/entity.dmp generated/types.sql
+GENERATED = generated/entity.dmp generated/types.sql generated/catalog.dmp
 
 generated/types.sql: generated/entity.dmp
 
