@@ -8,6 +8,9 @@ echo_cat() {
 
 cat << _EOF_
 -- THIS IS A GENERATED FILE. DO NOT EDIT!
+
+SET client_min_messages = WARNING;
+
 CREATE SCHEMA cat_snap;
 CREATE SCHEMA _cat_snap;
 
@@ -23,6 +26,8 @@ cat generated/types.sql
 
 echo_cat generated/catalog.dmp
 
+echo_cat build/functions.sql
+echo_cat build/gather.sql
 echo_cat build/delta.sql
 
 # vi: expandtab ts=2 sw=2
