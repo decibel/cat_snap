@@ -29,6 +29,28 @@ psql -qt -v ON_ERROR_STOP=1 -f meta/entity.sql || exit 1
 
 cat << _EOF_
 UPDATE entity SET delta_keys = delta_keys || array['queryid'] WHERE entity = 'pg_stat_statements' AND NOT delta_keys @> array['queryid'];
+
+CREATE VIEW entity_v AS
+    SELECT *
+        , array(
+            SELECT attribute_name || ' ' || attribute_type
+                FROM unnest(e.attributes || e.extra_attributes)
+            ) AS base
+        , array(
+            SELECT attribute_name
+                    || CASE WHEN array[attribute_name] <@ (e.delta_counters || e.delta_fields) THEN '_d' ELSE '' END
+                    || ' '
+                    || attribute_type
+                FROM unnest(e.attributes)
+            ) AS delta
+        , array(
+            SELECT attribute_name || '_d interval'
+                FROM unnest(e.attributes)
+                WHERE attribute_type::text ~ '^timestamp with'
+            ) AS intervals
+    FROM entity e
+    ORDER BY entity
+;
 _EOF_
 
 # vi: noexpandtab ts=4 sw=4
