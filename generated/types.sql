@@ -34,13 +34,11 @@ CREATE TYPE raw_language AS (xmin xid, oid oid, lanname text, lanowner oid, lani
 CREATE TYPE raw_largeobject AS (xmin xid, loid oid, pageno integer, data bytea);
 CREATE TYPE raw_largeobject_metadata AS (xmin xid, oid oid, lomowner oid, lomacl aclitem[]);
 CREATE TYPE raw_locks AS (locktype text, database oid, relation oid, page integer, tuple smallint, virtualxid text, transactionid xid, classid oid, objid oid, objsubid smallint, virtualtransaction text, pid integer, mode text, granted boolean, fastpath boolean);
-CREATE TYPE raw_matviews AS (schemaname text, matviewname text, matviewowner text, tablespace text, hasindexes boolean, ispopulated boolean, definition text);
 CREATE TYPE raw_namespace AS (xmin xid, oid oid, nspname text, nspowner oid, nspacl aclitem[]);
 CREATE TYPE raw_opclass AS (xmin xid, oid oid, opcmethod oid, opcname text, opcnamespace oid, opcowner oid, opcfamily oid, opcintype oid, opcdefault boolean, opckeytype oid);
 CREATE TYPE raw_operator AS (xmin xid, oid oid, oprname text, oprnamespace oid, oprowner oid, oprkind "char", oprcanmerge boolean, oprcanhash boolean, oprleft oid, oprright oid, oprresult oid, oprcom oid, oprnegate oid, oprcode regproc, oprrest regproc, oprjoin regproc);
 CREATE TYPE raw_opfamily AS (xmin xid, oid oid, opfmethod oid, opfname text, opfnamespace oid, opfowner oid);
 CREATE TYPE raw_pltemplate AS (xmin xid, tmplname text, tmpltrusted boolean, tmpldbacreate boolean, tmplhandler text, tmplinline text, tmplvalidator text, tmpllibrary text, tmplacl aclitem[]);
-CREATE TYPE raw_policies AS (schemaname text, tablename text, policyname text, roles name[], cmd text, qual text, with_check text);
 CREATE TYPE raw_policy AS (xmin xid, oid oid, polname text, polrelid oid, polcmd "char", polroles oid[], polqual pg_node_tree, polwithcheck pg_node_tree);
 CREATE TYPE raw_prepared_statements AS (name text, statement text, prepare_time timestamp with time zone, parameter_types regtype[], from_sql boolean);
 CREATE TYPE raw_prepared_xacts AS (transaction xid, gid text, prepared timestamp with time zone, owner text, database text);
@@ -69,26 +67,11 @@ CREATE TYPE raw_stat_progress_vacuum AS (pid integer, datid oid, datname text, r
 CREATE TYPE raw_stat_replication AS (pid integer, usesysid oid, usename text, application_name text, client_addr inet, client_hostname text, client_port integer, backend_start timestamp with time zone, backend_xmin xid, state text, sent_location pg_lsn, write_location pg_lsn, flush_location pg_lsn, replay_location pg_lsn, sync_priority integer, sync_state text);
 CREATE TYPE raw_stat_ssl AS (pid integer, ssl boolean, version text, cipher text, bits integer, compression boolean, clientdn text);
 CREATE TYPE raw_stat_statements AS (userid oid, dbid oid, queryid bigint, query text, calls bigint, total_time double precision, min_time double precision, max_time double precision, mean_time double precision, stddev_time double precision, rows bigint, shared_blks_hit bigint, shared_blks_read bigint, shared_blks_dirtied bigint, shared_blks_written bigint, local_blks_hit bigint, local_blks_read bigint, local_blks_dirtied bigint, local_blks_written bigint, temp_blks_read bigint, temp_blks_written bigint, blk_read_time double precision, blk_write_time double precision);
-CREATE TYPE raw_stat_sys_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_scan bigint, idx_tup_read bigint, idx_tup_fetch bigint);
-CREATE TYPE raw_stat_sys_tables AS (relid oid, schemaname text, relname text, seq_scan bigint, seq_tup_read bigint, idx_scan bigint, idx_tup_fetch bigint, n_tup_ins bigint, n_tup_upd bigint, n_tup_del bigint, n_tup_hot_upd bigint, n_live_tup bigint, n_dead_tup bigint, n_mod_since_analyze bigint, last_vacuum timestamp with time zone, last_autovacuum timestamp with time zone, last_analyze timestamp with time zone, last_autoanalyze timestamp with time zone, vacuum_count bigint, autovacuum_count bigint, analyze_count bigint, autoanalyze_count bigint);
 CREATE TYPE raw_stat_user_functions AS (funcid oid, schemaname text, funcname text, calls bigint, total_time double precision, self_time double precision);
-CREATE TYPE raw_stat_user_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_scan bigint, idx_tup_read bigint, idx_tup_fetch bigint);
-CREATE TYPE raw_stat_user_tables AS (relid oid, schemaname text, relname text, seq_scan bigint, seq_tup_read bigint, idx_scan bigint, idx_tup_fetch bigint, n_tup_ins bigint, n_tup_upd bigint, n_tup_del bigint, n_tup_hot_upd bigint, n_live_tup bigint, n_dead_tup bigint, n_mod_since_analyze bigint, last_vacuum timestamp with time zone, last_autovacuum timestamp with time zone, last_analyze timestamp with time zone, last_autoanalyze timestamp with time zone, vacuum_count bigint, autovacuum_count bigint, analyze_count bigint, autoanalyze_count bigint);
 CREATE TYPE raw_stat_wal_receiver AS (pid integer, status text, receive_start_lsn pg_lsn, receive_start_tli integer, received_lsn pg_lsn, received_tli integer, last_msg_send_time timestamp with time zone, last_msg_receipt_time timestamp with time zone, latest_end_lsn pg_lsn, latest_end_time timestamp with time zone, slot_name text);
-CREATE TYPE raw_stat_xact_all_tables AS (relid oid, schemaname text, relname text, seq_scan bigint, seq_tup_read bigint, idx_scan bigint, idx_tup_fetch bigint, n_tup_ins bigint, n_tup_upd bigint, n_tup_del bigint, n_tup_hot_upd bigint);
-CREATE TYPE raw_stat_xact_sys_tables AS (relid oid, schemaname text, relname text, seq_scan bigint, seq_tup_read bigint, idx_scan bigint, idx_tup_fetch bigint, n_tup_ins bigint, n_tup_upd bigint, n_tup_del bigint, n_tup_hot_upd bigint);
-CREATE TYPE raw_stat_xact_user_functions AS (funcid oid, schemaname text, funcname text, calls bigint, total_time double precision, self_time double precision);
-CREATE TYPE raw_stat_xact_user_tables AS (relid oid, schemaname text, relname text, seq_scan bigint, seq_tup_read bigint, idx_scan bigint, idx_tup_fetch bigint, n_tup_ins bigint, n_tup_upd bigint, n_tup_del bigint, n_tup_hot_upd bigint);
 CREATE TYPE raw_statio_all_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read bigint, idx_blks_hit bigint);
 CREATE TYPE raw_statio_all_sequences AS (relid oid, schemaname text, relname text, blks_read bigint, blks_hit bigint);
 CREATE TYPE raw_statio_all_tables AS (relid oid, schemaname text, relname text, heap_blks_read bigint, heap_blks_hit bigint, idx_blks_read bigint, idx_blks_hit bigint, toast_blks_read bigint, toast_blks_hit bigint, tidx_blks_read bigint, tidx_blks_hit bigint);
-CREATE TYPE raw_statio_sys_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read bigint, idx_blks_hit bigint);
-CREATE TYPE raw_statio_sys_sequences AS (relid oid, schemaname text, relname text, blks_read bigint, blks_hit bigint);
-CREATE TYPE raw_statio_sys_tables AS (relid oid, schemaname text, relname text, heap_blks_read bigint, heap_blks_hit bigint, idx_blks_read bigint, idx_blks_hit bigint, toast_blks_read bigint, toast_blks_hit bigint, tidx_blks_read bigint, tidx_blks_hit bigint);
-CREATE TYPE raw_statio_user_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read bigint, idx_blks_hit bigint);
-CREATE TYPE raw_statio_user_sequences AS (relid oid, schemaname text, relname text, blks_read bigint, blks_hit bigint);
-CREATE TYPE raw_statio_user_tables AS (relid oid, schemaname text, relname text, heap_blks_read bigint, heap_blks_hit bigint, idx_blks_read bigint, idx_blks_hit bigint, toast_blks_read bigint, toast_blks_hit bigint, tidx_blks_read bigint, tidx_blks_hit bigint);
-CREATE TYPE raw_stats AS (schemaname text, tablename text, attname text, inherited boolean, null_frac real, avg_width integer, n_distinct real, most_common_vals text, most_common_freqs real[], histogram_bounds text, correlation real, most_common_elems text, most_common_elem_freqs real[], elem_count_histogram real[]);
 CREATE TYPE raw_tablespace AS (xmin xid, oid oid, spcname text, spcowner oid, spcacl aclitem[], spcoptions text[]);
 CREATE TYPE raw_timezone_abbrevs AS (abbrev text, utc_offset interval, is_dst boolean);
 CREATE TYPE raw_timezone_names AS (name text, abbrev text, utc_offset interval, is_dst boolean);
@@ -101,35 +84,120 @@ CREATE TYPE raw_ts_parser AS (xmin xid, oid oid, prsname text, prsnamespace oid,
 CREATE TYPE raw_ts_template AS (xmin xid, oid oid, tmplname text, tmplnamespace oid, tmplinit regproc, tmpllexize regproc);
 CREATE TYPE raw_type AS (xmin xid, oid oid, typname text, typnamespace oid, typowner oid, typlen smallint, typbyval boolean, typtype "char", typcategory "char", typispreferred boolean, typisdefined boolean, typdelim "char", typrelid oid, typelem oid, typarray oid, typinput regproc, typoutput regproc, typreceive regproc, typsend regproc, typmodin regproc, typmodout regproc, typanalyze regproc, typalign "char", typstorage "char", typnotnull boolean, typbasetype oid, typtypmod integer, typndims integer, typcollation oid, typdefaultbin pg_node_tree, typdefault text, typacl aclitem[]);
 CREATE TYPE raw_user_mapping AS (xmin xid, oid oid, umuser oid, umserver oid, umoptions text[]);
-CREATE TYPE delta_replication_origin_status AS (local_id oid, external_id text, remote_lsn pg_lsn, local_lsn pg_lsn);
-CREATE TYPE delta_replication_slots AS (slot_name text, plugin text, slot_type text, datoid oid, database text, active boolean, active_pid integer, xmin xid, catalog_xmin xid, restart_lsn pg_lsn, confirmed_flush_lsn pg_lsn);
 CREATE TYPE delta_stat_all_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_scan_d bigint, idx_tup_read_d bigint, idx_tup_fetch_d bigint);
 CREATE TYPE delta_stat_all_tables AS (relid oid, schemaname text, relname text, seq_scan_d bigint, seq_tup_read_d bigint, idx_scan_d bigint, idx_tup_fetch_d bigint, n_tup_ins_d bigint, n_tup_upd_d bigint, n_tup_del_d bigint, n_tup_hot_upd_d bigint, n_live_tup_d bigint, n_dead_tup_d bigint, n_mod_since_analyze_d bigint, last_vacuum timestamp with time zone, last_autovacuum timestamp with time zone, last_analyze timestamp with time zone, last_autoanalyze timestamp with time zone, vacuum_count_d bigint, autovacuum_count_d bigint, analyze_count_d bigint, autoanalyze_count_d bigint, last_vacuum_d interval, last_autovacuum_d interval, last_analyze_d interval, last_autoanalyze_d interval);
 CREATE TYPE delta_stat_archiver AS (archived_count_d bigint, last_archived_wal text, last_archived_time timestamp with time zone, failed_count_d bigint, last_failed_wal text, last_failed_time timestamp with time zone, stats_reset timestamp with time zone, last_archived_time_d interval, last_failed_time_d interval, stats_reset_d interval);
 CREATE TYPE delta_stat_bgwriter AS (checkpoints_timed_d bigint, checkpoints_req_d bigint, checkpoint_write_time_d double precision, checkpoint_sync_time_d double precision, buffers_checkpoint_d bigint, buffers_clean_d bigint, maxwritten_clean_d bigint, buffers_backend_d bigint, buffers_backend_fsync_d bigint, buffers_alloc_d bigint, stats_reset timestamp with time zone, stats_reset_d interval);
 CREATE TYPE delta_stat_database AS (datid oid, datname text, numbackends integer, xact_commit_d bigint, xact_rollback_d bigint, blks_read_d bigint, blks_hit_d bigint, tup_returned_d bigint, tup_fetched_d bigint, tup_inserted_d bigint, tup_updated_d bigint, tup_deleted_d bigint, conflicts_d bigint, temp_files_d bigint, temp_bytes_d bigint, deadlocks_d bigint, blk_read_time_d double precision, blk_write_time_d double precision, stats_reset timestamp with time zone, stats_reset_d interval);
 CREATE TYPE delta_stat_database_conflicts AS (datid oid, datname text, confl_tablespace_d bigint, confl_lock_d bigint, confl_snapshot_d bigint, confl_bufferpin_d bigint, confl_deadlock_d bigint);
-CREATE TYPE delta_stat_progress_vacuum AS (pid integer, datid oid, datname text, relid oid, phase text, heap_blks_total_d bigint, heap_blks_scanned_d bigint, heap_blks_vacuumed_d bigint, index_vacuum_count_d bigint, max_dead_tuples_d bigint, num_dead_tuples_d bigint);
-CREATE TYPE delta_stat_replication AS (pid integer, usesysid oid, usename text, application_name text, client_addr inet, client_hostname text, client_port integer, backend_start timestamp with time zone, backend_xmin xid, state text, sent_location pg_lsn, write_location pg_lsn, flush_location pg_lsn, replay_location pg_lsn, sync_priority integer, sync_state text, backend_start_d interval);
-CREATE TYPE delta_stat_ssl AS (pid integer, ssl boolean, version text, cipher text, bits integer, compression boolean, clientdn text);
 CREATE TYPE delta_stat_statements AS (userid oid, dbid oid, queryid_d bigint, query text, calls_d bigint, total_time_d double precision, min_time_d double precision, max_time_d double precision, mean_time_d double precision, stddev_time_d double precision, rows_d bigint, shared_blks_hit_d bigint, shared_blks_read_d bigint, shared_blks_dirtied_d bigint, shared_blks_written_d bigint, local_blks_hit_d bigint, local_blks_read_d bigint, local_blks_dirtied_d bigint, local_blks_written_d bigint, temp_blks_read_d bigint, temp_blks_written_d bigint, blk_read_time_d double precision, blk_write_time_d double precision);
-CREATE TYPE delta_stat_sys_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_scan_d bigint, idx_tup_read_d bigint, idx_tup_fetch_d bigint);
-CREATE TYPE delta_stat_sys_tables AS (relid oid, schemaname text, relname text, seq_scan_d bigint, seq_tup_read_d bigint, idx_scan_d bigint, idx_tup_fetch_d bigint, n_tup_ins_d bigint, n_tup_upd_d bigint, n_tup_del_d bigint, n_tup_hot_upd_d bigint, n_live_tup_d bigint, n_dead_tup_d bigint, n_mod_since_analyze_d bigint, last_vacuum timestamp with time zone, last_autovacuum timestamp with time zone, last_analyze timestamp with time zone, last_autoanalyze timestamp with time zone, vacuum_count_d bigint, autovacuum_count_d bigint, analyze_count_d bigint, autoanalyze_count_d bigint, last_vacuum_d interval, last_autovacuum_d interval, last_analyze_d interval, last_autoanalyze_d interval);
 CREATE TYPE delta_stat_user_functions AS (funcid oid, schemaname text, funcname text, calls_d bigint, total_time_d double precision, self_time_d double precision);
-CREATE TYPE delta_stat_user_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_scan_d bigint, idx_tup_read_d bigint, idx_tup_fetch_d bigint);
-CREATE TYPE delta_stat_user_tables AS (relid oid, schemaname text, relname text, seq_scan_d bigint, seq_tup_read_d bigint, idx_scan_d bigint, idx_tup_fetch_d bigint, n_tup_ins_d bigint, n_tup_upd_d bigint, n_tup_del_d bigint, n_tup_hot_upd_d bigint, n_live_tup_d bigint, n_dead_tup_d bigint, n_mod_since_analyze_d bigint, last_vacuum timestamp with time zone, last_autovacuum timestamp with time zone, last_analyze timestamp with time zone, last_autoanalyze timestamp with time zone, vacuum_count_d bigint, autovacuum_count_d bigint, analyze_count_d bigint, autoanalyze_count_d bigint, last_vacuum_d interval, last_autovacuum_d interval, last_analyze_d interval, last_autoanalyze_d interval);
-CREATE TYPE delta_stat_wal_receiver AS (pid integer, status text, receive_start_lsn pg_lsn, receive_start_tli integer, received_lsn pg_lsn, received_tli integer, last_msg_send_time timestamp with time zone, last_msg_receipt_time timestamp with time zone, latest_end_lsn pg_lsn, latest_end_time timestamp with time zone, slot_name text, last_msg_send_time_d interval, last_msg_receipt_time_d interval, latest_end_time_d interval);
-CREATE TYPE delta_stat_xact_all_tables AS (relid oid, schemaname text, relname text, seq_scan_d bigint, seq_tup_read_d bigint, idx_scan_d bigint, idx_tup_fetch_d bigint, n_tup_ins_d bigint, n_tup_upd_d bigint, n_tup_del_d bigint, n_tup_hot_upd_d bigint);
-CREATE TYPE delta_stat_xact_sys_tables AS (relid oid, schemaname text, relname text, seq_scan_d bigint, seq_tup_read_d bigint, idx_scan_d bigint, idx_tup_fetch_d bigint, n_tup_ins_d bigint, n_tup_upd_d bigint, n_tup_del_d bigint, n_tup_hot_upd_d bigint);
-CREATE TYPE delta_stat_xact_user_functions AS (funcid oid, schemaname text, funcname text, calls_d bigint, total_time_d double precision, self_time_d double precision);
-CREATE TYPE delta_stat_xact_user_tables AS (relid oid, schemaname text, relname text, seq_scan_d bigint, seq_tup_read_d bigint, idx_scan_d bigint, idx_tup_fetch_d bigint, n_tup_ins_d bigint, n_tup_upd_d bigint, n_tup_del_d bigint, n_tup_hot_upd_d bigint);
 CREATE TYPE delta_statio_all_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read_d bigint, idx_blks_hit_d bigint);
 CREATE TYPE delta_statio_all_sequences AS (relid oid, schemaname text, relname text, blks_read_d bigint, blks_hit_d bigint);
 CREATE TYPE delta_statio_all_tables AS (relid oid, schemaname text, relname text, heap_blks_read_d bigint, heap_blks_hit_d bigint, idx_blks_read_d bigint, idx_blks_hit_d bigint, toast_blks_read_d bigint, toast_blks_hit_d bigint, tidx_blks_read_d bigint, tidx_blks_hit_d bigint);
-CREATE TYPE delta_statio_sys_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read_d bigint, idx_blks_hit_d bigint);
-CREATE TYPE delta_statio_sys_sequences AS (relid oid, schemaname text, relname text, blks_read_d bigint, blks_hit_d bigint);
-CREATE TYPE delta_statio_sys_tables AS (relid oid, schemaname text, relname text, heap_blks_read_d bigint, heap_blks_hit_d bigint, idx_blks_read_d bigint, idx_blks_hit_d bigint, toast_blks_read_d bigint, toast_blks_hit_d bigint, tidx_blks_read_d bigint, tidx_blks_hit_d bigint);
-CREATE TYPE delta_statio_user_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read_d bigint, idx_blks_hit_d bigint);
-CREATE TYPE delta_statio_user_sequences AS (relid oid, schemaname text, relname text, blks_read_d bigint, blks_hit_d bigint);
-CREATE TYPE delta_statio_user_tables AS (relid oid, schemaname text, relname text, heap_blks_read_d bigint, heap_blks_hit_d bigint, idx_blks_read_d bigint, idx_blks_hit_d bigint, toast_blks_read_d bigint, toast_blks_hit_d bigint, tidx_blks_read_d bigint, tidx_blks_hit_d bigint);
-CREATE TYPE delta_stats AS (schemaname text, tablename text, attname text, inherited boolean, null_frac real, avg_width integer, n_distinct real, most_common_vals text, most_common_freqs real[], histogram_bounds text, correlation real, most_common_elems text, most_common_elem_freqs real[], elem_count_histogram real[]);
+CREATE TYPE snapshot_stats_file AS (
+    version     int
+    , snapshot_timestamp    timestamptz
+    , pg_stat_all_indexes raw_stat_all_indexes[]
+    , pg_stat_all_tables raw_stat_all_tables[]
+    , pg_stat_archiver raw_stat_archiver[]
+    , pg_stat_bgwriter raw_stat_bgwriter[]
+    , pg_stat_database raw_stat_database[]
+    , pg_stat_database_conflicts raw_stat_database_conflicts[]
+    , pg_stat_user_functions raw_stat_user_functions[]
+    , pg_statio_all_indexes raw_statio_all_indexes[]
+    , pg_statio_all_sequences raw_statio_all_sequences[]
+    , pg_statio_all_tables raw_statio_all_tables[]
+    , pg_stat_statements raw_stat_statements[]
+);
+CREATE TYPE snapshot_other_status AS (
+    version     int
+    , transaction_start     timestamptz
+    , clock_time            timestamptz
+    , pg_available_extension_versions raw_available_extension_versions[]
+    , pg_available_extensions raw_available_extensions[]
+    , pg_config raw_config[]
+    , pg_cursors raw_cursors[]
+    , pg_file_settings raw_file_settings[]
+    , pg_locks raw_locks[]
+    , pg_prepared_statements raw_prepared_statements[]
+    , pg_prepared_xacts raw_prepared_xacts[]
+    , pg_replication_origin_status raw_replication_origin_status[]
+    , pg_replication_slots raw_replication_slots[]
+    , pg_roles raw_roles[]
+    , pg_rules raw_rules[]
+    , pg_seclabels raw_seclabels[]
+    , pg_stat_progress_vacuum raw_stat_progress_vacuum[]
+    , pg_settings raw_settings[]
+    , pg_stat_activity raw_stat_activity[]
+    , pg_stat_replication raw_stat_replication[]
+    , pg_stat_ssl raw_stat_ssl[]
+    , pg_stat_wal_receiver raw_stat_wal_receiver[]
+    , pg_timezone_abbrevs raw_timezone_abbrevs[]
+    , pg_timezone_names raw_timezone_names[]
+);
+CREATE TYPE snapshot_catalog AS (
+    version     int
+    , transaction_start     timestamptz
+    , clock_time            timestamptz
+    , pg_aggregate raw_aggregate[]
+    , pg_am raw_am[]
+    , pg_amop raw_amop[]
+    , pg_amproc raw_amproc[]
+    , pg_attrdef raw_attrdef[]
+    , pg_attribute raw_attribute[]
+    , pg_auth_members raw_auth_members[]
+    , pg_cast raw_cast[]
+    , pg_class raw_class[]
+    , pg_collation raw_collation[]
+    , pg_constraint raw_constraint[]
+    , pg_namespace raw_namespace[]
+    , pg_conversion raw_conversion[]
+    , pg_database raw_database[]
+    , pg_db_role_setting raw_db_role_setting[]
+    , pg_default_acl raw_default_acl[]
+    , pg_depend raw_depend[]
+    , pg_description raw_description[]
+    , pg_enum raw_enum[]
+    , pg_event_trigger raw_event_trigger[]
+    , pg_extension raw_extension[]
+    , pg_foreign_data_wrapper raw_foreign_data_wrapper[]
+    , pg_foreign_server raw_foreign_server[]
+    , pg_foreign_table raw_foreign_table[]
+    , pg_index raw_index[]
+    , pg_inherits raw_inherits[]
+    , pg_language raw_language[]
+    , pg_largeobject raw_largeobject[]
+    , pg_largeobject_metadata raw_largeobject_metadata[]
+    , pg_opclass raw_opclass[]
+    , pg_operator raw_operator[]
+    , pg_opfamily raw_opfamily[]
+    , pg_pltemplate raw_pltemplate[]
+    , pg_policy raw_policy[]
+    , pg_proc raw_proc[]
+    , pg_range raw_range[]
+    , pg_replication_origin raw_replication_origin[]
+    , pg_rewrite raw_rewrite[]
+    , pg_seclabel raw_seclabel[]
+    , pg_shdepend raw_shdepend[]
+    , pg_shdescription raw_shdescription[]
+    , pg_shseclabel raw_shseclabel[]
+    , pg_ts_dict raw_ts_dict[]
+    , pg_tablespace raw_tablespace[]
+    , pg_transform raw_transform[]
+    , pg_trigger raw_trigger[]
+    , pg_ts_config raw_ts_config[]
+    , pg_ts_config_map raw_ts_config_map[]
+    , pg_ts_parser raw_ts_parser[]
+    , pg_ts_template raw_ts_template[]
+    , pg_type raw_type[]
+    , pg_user_mapping raw_user_mapping[]
+);
+CREATE TYPE snapshot_all AS (
+    version     int
+    , database_name         text
+    , cluster_identifier    text
+    , catalog               snapshot_catalog
+    , stats_file            snapshot_stats_file
+    , other_status          snapshot_other_status
+);

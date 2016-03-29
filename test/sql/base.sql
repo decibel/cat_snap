@@ -29,7 +29,7 @@ SELECT plan(
 
 SELECT is(
   (SELECT count(*)::int FROM _cat_snap.entity)
-  , 101
+  , 84
   , 'Number of entities'
 );
 
@@ -37,6 +37,7 @@ SELECT types_are(
   'cat_snap'
   , array( SELECT replace( entity, 'pg_', 'raw_' )::name FROM _cat_snap.entity )
     || array( SELECT replace( entity, 'pg_', 'delta_' )::name FROM _cat_snap.entity WHERE entity_type = 'Stats File' )
+    || '{snapshot_all,snapshot_catalog,snapshot_stats_file,snapshot_other_status}'::name[]
   , 'Verify types'
 );
 

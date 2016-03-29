@@ -51,7 +51,10 @@ SELECT
      * relkind.
      */
     , CASE WHEN relkind = 'v' THEN
-        CASE WHEN relname ~ '^pg_(stat|replication)' AND relname != 'pg_stat_activity' THEN 'Stats File'
+        CASE WHEN relname ~ '^pg_stat'
+            AND relname !~ 'progress|replication|_ssl|_wal_'
+            AND relname NOT IN( 'pg_stat_activity', 'pg_stats' )
+          THEN 'Stats File'
         ELSE 'Other Status'
         END
       ELSE 'Catalog'
@@ -81,8 +84,8 @@ SELECT
             ( relkind = 'r' AND relname !~ '^pg_(authid|statistic)' )
             OR ( relkind = 'v' AND (
                   relname = 'pg_stat_user_functions' 
-                  OR ( relname ~ '^pg_stat' AND relname !~ '_(user|sys)_' )
-                  OR relname !~ '^pg_(group|indexes|shadow|tables|user|views)'
+                  OR ( relname ~ '^pg_stat' AND relname !~ '_(user|sys|xact)_' AND relname != 'pg_stats' )
+                  OR relname !~ '^pg_(group|indexes|matviews|policies|shadow|stat|tables|user|views)'
             ) )
         )
       )
