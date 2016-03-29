@@ -4,8 +4,7 @@ BEGIN;
 CREATE EXTENSION IF NOT EXISTS cat_tools;
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
--- See also entity.sh if you change this
-CREATE TYPE attribute AS( attribute_name text, attribute_type regtype );
+\i common/types.sql
 
 CREATE TABLE extra(
   relname text NOT NULL PRIMARY KEY

@@ -1,8 +1,9 @@
 #!/bin/sh
 
-# See also entity.sql if you change the attribute type
+# attribute type is needed by types.sql, which loads entity.dmp
+cat common/types.sql
+
 cat << _EOF_
-CREATE TYPE attribute AS( attribute_name text, attribute_type regtype );
 CREATE TYPE entity_type AS ENUM(
 	'Catalog'
 	, 'Stats File'
