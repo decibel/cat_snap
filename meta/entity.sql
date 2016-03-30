@@ -53,7 +53,7 @@ SELECT
     , CASE WHEN relkind = 'v' THEN
         CASE WHEN relname ~ '^pg_stat'
             AND relname !~ 'progress|replication|_ssl|_wal_'
-            AND relname NOT IN( 'pg_stat_activity', 'pg_stats' )
+            AND relname NOT IN( 'pg_stat_activity', 'pg_stats', 'pg_stat_statements' )
           THEN 'Stats File'
         ELSE 'Other Status'
         END

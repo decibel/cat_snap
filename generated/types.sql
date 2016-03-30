@@ -90,30 +90,14 @@ CREATE TYPE delta_stat_archiver AS (archived_count_d bigint, last_archived_wal t
 CREATE TYPE delta_stat_bgwriter AS (checkpoints_timed_d bigint, checkpoints_req_d bigint, checkpoint_write_time_d double precision, checkpoint_sync_time_d double precision, buffers_checkpoint_d bigint, buffers_clean_d bigint, maxwritten_clean_d bigint, buffers_backend_d bigint, buffers_backend_fsync_d bigint, buffers_alloc_d bigint, stats_reset timestamp with time zone, stats_reset_d interval);
 CREATE TYPE delta_stat_database AS (datid oid, datname text, numbackends integer, xact_commit_d bigint, xact_rollback_d bigint, blks_read_d bigint, blks_hit_d bigint, tup_returned_d bigint, tup_fetched_d bigint, tup_inserted_d bigint, tup_updated_d bigint, tup_deleted_d bigint, conflicts_d bigint, temp_files_d bigint, temp_bytes_d bigint, deadlocks_d bigint, blk_read_time_d double precision, blk_write_time_d double precision, stats_reset timestamp with time zone, stats_reset_d interval);
 CREATE TYPE delta_stat_database_conflicts AS (datid oid, datname text, confl_tablespace_d bigint, confl_lock_d bigint, confl_snapshot_d bigint, confl_bufferpin_d bigint, confl_deadlock_d bigint);
-CREATE TYPE delta_stat_statements AS (userid oid, dbid oid, queryid_d bigint, query text, calls_d bigint, total_time_d double precision, min_time_d double precision, max_time_d double precision, mean_time_d double precision, stddev_time_d double precision, rows_d bigint, shared_blks_hit_d bigint, shared_blks_read_d bigint, shared_blks_dirtied_d bigint, shared_blks_written_d bigint, local_blks_hit_d bigint, local_blks_read_d bigint, local_blks_dirtied_d bigint, local_blks_written_d bigint, temp_blks_read_d bigint, temp_blks_written_d bigint, blk_read_time_d double precision, blk_write_time_d double precision);
 CREATE TYPE delta_stat_user_functions AS (funcid oid, schemaname text, funcname text, calls_d bigint, total_time_d double precision, self_time_d double precision);
 CREATE TYPE delta_statio_all_indexes AS (relid oid, indexrelid oid, schemaname text, relname text, indexrelname text, idx_blks_read_d bigint, idx_blks_hit_d bigint);
 CREATE TYPE delta_statio_all_sequences AS (relid oid, schemaname text, relname text, blks_read_d bigint, blks_hit_d bigint);
 CREATE TYPE delta_statio_all_tables AS (relid oid, schemaname text, relname text, heap_blks_read_d bigint, heap_blks_hit_d bigint, idx_blks_read_d bigint, idx_blks_hit_d bigint, toast_blks_read_d bigint, toast_blks_hit_d bigint, tidx_blks_read_d bigint, tidx_blks_hit_d bigint);
-CREATE TYPE snapshot_stats_file AS (
-    version     int
-    , snapshot_timestamp    timestamptz
-    , pg_stat_all_indexes raw_stat_all_indexes[]
-    , pg_stat_all_tables raw_stat_all_tables[]
-    , pg_stat_archiver raw_stat_archiver[]
-    , pg_stat_bgwriter raw_stat_bgwriter[]
-    , pg_stat_database raw_stat_database[]
-    , pg_stat_database_conflicts raw_stat_database_conflicts[]
-    , pg_stat_user_functions raw_stat_user_functions[]
-    , pg_statio_all_indexes raw_statio_all_indexes[]
-    , pg_statio_all_sequences raw_statio_all_sequences[]
-    , pg_statio_all_tables raw_statio_all_tables[]
-    , pg_stat_statements raw_stat_statements[]
-);
 CREATE TYPE snapshot_other_status AS (
-    version     int
+    snapshot_version     int
     , transaction_start     timestamptz
-    , clock_time            timestamptz
+    , clock_timestamp        timestamptz
     , pg_available_extension_versions raw_available_extension_versions[]
     , pg_available_extensions raw_available_extensions[]
     , pg_config raw_config[]
@@ -127,19 +111,20 @@ CREATE TYPE snapshot_other_status AS (
     , pg_roles raw_roles[]
     , pg_rules raw_rules[]
     , pg_seclabels raw_seclabels[]
-    , pg_stat_progress_vacuum raw_stat_progress_vacuum[]
     , pg_settings raw_settings[]
     , pg_stat_activity raw_stat_activity[]
+    , pg_stat_progress_vacuum raw_stat_progress_vacuum[]
     , pg_stat_replication raw_stat_replication[]
     , pg_stat_ssl raw_stat_ssl[]
+    , pg_stat_statements raw_stat_statements[]
     , pg_stat_wal_receiver raw_stat_wal_receiver[]
     , pg_timezone_abbrevs raw_timezone_abbrevs[]
     , pg_timezone_names raw_timezone_names[]
 );
 CREATE TYPE snapshot_catalog AS (
-    version     int
+    snapshot_version     int
     , transaction_start     timestamptz
-    , clock_time            timestamptz
+    , clock_timestamp        timestamptz
     , pg_aggregate raw_aggregate[]
     , pg_am raw_am[]
     , pg_amop raw_amop[]
@@ -151,7 +136,6 @@ CREATE TYPE snapshot_catalog AS (
     , pg_class raw_class[]
     , pg_collation raw_collation[]
     , pg_constraint raw_constraint[]
-    , pg_namespace raw_namespace[]
     , pg_conversion raw_conversion[]
     , pg_database raw_database[]
     , pg_db_role_setting raw_db_role_setting[]
@@ -169,6 +153,7 @@ CREATE TYPE snapshot_catalog AS (
     , pg_language raw_language[]
     , pg_largeobject raw_largeobject[]
     , pg_largeobject_metadata raw_largeobject_metadata[]
+    , pg_namespace raw_namespace[]
     , pg_opclass raw_opclass[]
     , pg_operator raw_operator[]
     , pg_opfamily raw_opfamily[]
@@ -182,19 +167,33 @@ CREATE TYPE snapshot_catalog AS (
     , pg_shdepend raw_shdepend[]
     , pg_shdescription raw_shdescription[]
     , pg_shseclabel raw_shseclabel[]
-    , pg_ts_dict raw_ts_dict[]
     , pg_tablespace raw_tablespace[]
     , pg_transform raw_transform[]
     , pg_trigger raw_trigger[]
     , pg_ts_config raw_ts_config[]
     , pg_ts_config_map raw_ts_config_map[]
+    , pg_ts_dict raw_ts_dict[]
     , pg_ts_parser raw_ts_parser[]
     , pg_ts_template raw_ts_template[]
     , pg_type raw_type[]
     , pg_user_mapping raw_user_mapping[]
 );
+CREATE TYPE snapshot_stats_file AS (
+    snapshot_version     int
+    , snapshot_timestamp     timestamptz
+    , pg_stat_all_indexes raw_stat_all_indexes[]
+    , pg_stat_all_tables raw_stat_all_tables[]
+    , pg_stat_archiver raw_stat_archiver[]
+    , pg_stat_bgwriter raw_stat_bgwriter[]
+    , pg_stat_database raw_stat_database[]
+    , pg_stat_database_conflicts raw_stat_database_conflicts[]
+    , pg_stat_user_functions raw_stat_user_functions[]
+    , pg_statio_all_indexes raw_statio_all_indexes[]
+    , pg_statio_all_sequences raw_statio_all_sequences[]
+    , pg_statio_all_tables raw_statio_all_tables[]
+);
 CREATE TYPE snapshot_all AS (
-    version     int
+    snapshot_version     int
     , database_name         text
     , cluster_identifier    text
     , catalog               snapshot_catalog

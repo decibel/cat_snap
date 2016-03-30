@@ -28,44 +28,27 @@ SELECT format(
 ;
 
 SELECT format(
-$$CREATE TYPE snapshot_stats_file AS (
-    version     int
-    , snapshot_timestamp    timestamptz
+$$CREATE TYPE snapshot_%s AS (
+    snapshot_version     int
+    , %s
     , %s
 );$$
+    , replace( lower(entity_type::text), ' ', '_' )
+    , CASE WHEN entity_type = 'Stats File' THEN 'snapshot_timestamp     timestamptz'
+        ELSE 'transaction_start     timestamptz
+    , clock_timestamp        timestamptz'
+    END
     , array_to_string(
-        array( SELECT entity || ' ' || replace(entity, 'pg_', 'raw_') || '[]' FROM entity WHERE entity_type = 'Stats File' )
+        array( SELECT entity || ' ' || replace(entity, 'pg_', 'raw_') || '[]' FROM entity WHERE entity_type = t.entity_type ORDER BY entity )
         , E'\n    , '
     )
-);
-SELECT format(
-$$CREATE TYPE snapshot_other_status AS (
-    version     int
-    , transaction_start     timestamptz
-    , clock_time            timestamptz
-    , %s
-);$$
-    , array_to_string(
-        array( SELECT entity || ' ' || replace(entity, 'pg_', 'raw_') || '[]' FROM entity WHERE entity_type = 'Other Status' )
-        , E'\n    , '
-    )
-);
-SELECT format(
-$$CREATE TYPE snapshot_catalog AS (
-    version     int
-    , transaction_start     timestamptz
-    , clock_time            timestamptz
-    , %s
-);$$
-    , array_to_string(
-        array( SELECT entity || ' ' || replace(entity, 'pg_', 'raw_') || '[]' FROM entity WHERE entity_type = 'Catalog' )
-        , E'\n    , '
-    )
-);
+)
+    FROM (SELECT DISTINCT entity_type FROM entity) t
+;
 
 SELECT 
 $$CREATE TYPE snapshot_all AS (
-    version     int
+    snapshot_version     int
     , database_name         text
     , cluster_identifier    text
     , catalog               snapshot_catalog

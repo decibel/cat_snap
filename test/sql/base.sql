@@ -25,6 +25,7 @@ SELECT plan(
   +1  -- delta
   +1  -- extra_attributes
   +(SELECT count(*)::int FROM gather_code_expected)
+  +1  -- snapshot_all
 );
 
 SELECT is(
@@ -59,6 +60,11 @@ SELECT is(
     )
   FROM gather_code_expected
 ;
+
+SELECT lives_ok(
+  $$SELECT cat_snap.snapshot_code($$ || substring(version() from '[0-9]+\.[0-9]+') || $$, cluster_identifier = 'cluster id')$$
+  , 'Verify we can call snapshot_code( our version # )'
+);
 
 \i test/pgxntool/finish.sql
 
