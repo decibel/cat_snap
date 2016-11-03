@@ -1,5 +1,6 @@
 include pgxntool/base.mk
 
+.PHONY: cat_tools
 cat_tools: $(DESTDIR)$(datadir)/extension/cat_tools.control
 $(DESTDIR)$(datadir)/extension/cat_tools.control:
 	pgxn install cat_tools
