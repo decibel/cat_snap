@@ -15,6 +15,8 @@ generated: $(GENERATED)
 .PHONY: meta
 meta: generated
 all: generated
+
+# IF YOU CHANGE EITHER OF THESE, make sure to update generated/README
 generated/%.sql: meta/%.sql $(call extension_control,cat_tools)
 	@echo 'Generating $@ from $<'
 	@echo '-- THIS IS A GENERATED FILE. DO NOT EDIT!' > $@
