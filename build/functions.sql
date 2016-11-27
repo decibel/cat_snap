@@ -15,6 +15,7 @@ $body$;
 CREATE FUNCTION _cat_snap.catalog__get(
   version _cat_snap.catalog.version%TYPE
   , entity _cat_snap.catalog.entity%TYPE
+  , missing_ok boolean DEFAULT FALSE
 ) RETURNS _cat_snap.catalog LANGUAGE plpgsql STABLE AS $body$
 DECLARE
   o _cat_snap.catalog;
@@ -24,6 +25,12 @@ BEGIN
     WHERE row(c.version, c.entity) = row(catalog__get.version, catalog__get.entity)
   ;
   RETURN o;
+EXCEPTION WHEN no_data_found THEN
+  IF missing_ok IS TRUE THEN -- Treat NULL the same as FALSE
+    RETURN o;
+  ELSE
+    RAISE;
+  END IF;
 END
 $body$;
 

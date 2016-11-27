@@ -1,6 +1,14 @@
-This extension makes heavy use of metaprogramming. The following directories
-and their contents have special meaning:
+This extension makes heavy use of metaprogramming.
+The general build flow looks like this:
 
-meta/: Used to build the files that go into the generated/
+common/ + meta/ + "catalog" database -> generated/
+generated/ + build/ -> sql/
+
+common/: Things common to multiple parts of the build process
+meta/: Used to build the files that go into the generated directory
+"catalog" database: A database called catalog, created from https://github.com/decibel/catalog_entities/blob/master/load.sh
+
+generated/: These files should only need to be rebuilt to incorporate new Postgres versions.
 build/: Files used during normal build process
+
 sql/: Some files here are generated from files in build/

@@ -7,8 +7,11 @@ $(DESTDIR)$(datadir)/extension/cat_tools.control:
 	pgxn install cat_tools
 
 GENERATED = generated/entity.dmp generated/types.sql generated/catalog.dmp
+BUILD_SCRIPTS = $(wildcard build/*.sql)
 
 generated/types.sql: generated/entity.dmp
+meta/entity.sh: common/types.sql
+meta/entity.sql: common/types.sql
 
 .PHONY: generated
 generated: $(GENERATED)
@@ -33,10 +36,9 @@ generated/%.dmp: meta/%.sh meta/%* | $(call extension_control,cat_tools)
 	@test `cat $@ | wc -l` -gt 40
 
 .PHONY: genclean
-genclean:
+genclean: clean
 	rm -f $(GENERATED)
 
 EXTRA_CLEAN += sql/cat_snap.sql
-BUILD_SCRIPTS = $(wildcard build/*.sql)
 sql/%.sql: build/%.sh $(GENERATED) $(BUILD_SCRIPTS)
 	$< > $@

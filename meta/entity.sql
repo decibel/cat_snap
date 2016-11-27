@@ -2,7 +2,7 @@ SET log_min_messages = WARNING;
 SET client_min_messages = WARNING;
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS cat_tools;
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+--CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 \i common/types.sql
 
@@ -30,10 +30,10 @@ SELECT format(
  */
 SELECT
     *
-    , array( SELECT (a).attribute_name FROM unnest(attributes) a WHERE attribute_type = 'oid'::regtype ) AS delta_keys
+    , array( SELECT (a).attribute_name FROM unnest(attributes) a WHERE attribute_type = 'oid' ) AS delta_keys
     , array(
         SELECT (a).attribute_name FROM unnest(attributes) a
-        WHERE attribute_type IN ('bigint'::regtype, 'double precision')
+        WHERE attribute_type IN ('bigint'::regtype::text, 'double precision'::regtype::text)
       ) AS delta_counters
     , array(
         SELECT (a).attribute_name FROM unnest(attributes) a
@@ -51,9 +51,13 @@ SELECT
      * relkind.
      */
     , CASE WHEN relkind = 'v' THEN
-        CASE WHEN relname ~ '^pg_stat'
-            AND relname !~ 'progress|replication|_ssl|_wal_'
-            AND relname NOT IN( 'pg_stat_activity', 'pg_stats', 'pg_stat_statements' )
+        CASE WHEN 
+          relname ~ '^pg_(replication_slots|roles|rules)'
+          OR (
+            relname ~ '^pg_stat'
+              AND relname !~ 'progress|replication|_ssl|_wal_'
+              AND relname NOT IN( 'pg_stat_activity', 'pg_stats' )
+          )
           THEN 'Stats File'
         ELSE 'Other Status'
         END
@@ -77,11 +81,11 @@ SELECT
   FROM _cat_tools.pg_class_v c
   WHERE
     (
-      relname = 'pg_stat_statements'
+      FALSE --relname = 'pg_stat_statements'
       OR (
         relschema='pg_catalog'
         AND (
-            ( relkind = 'r' AND relname !~ '^pg_(authid|statistic)' )
+            ( relkind = 'r' AND relname !~ '^pg_(authid|largeobject|statistic)' )
             OR ( relkind = 'v' AND (
                   relname = 'pg_stat_user_functions' 
                   OR ( relname ~ '^pg_stat' AND relname !~ '_(user|sys|xact)_' AND relname != 'pg_stats' )

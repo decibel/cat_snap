@@ -9,10 +9,10 @@ DECLARE
   a _cat_snap.attribute;
 BEGIN
   e := _cat_snap.entity__get(entity);
-  c := _cat_snap.catalog__get(version, entity);
+  c := _cat_snap.catalog__get(version, entity, missing_ok := TRUE);
 
   RETURN format(
-    $$SELECT row(%s) FROM %s$$
+    $$SELECT row(%s) FROM pg_catalog.%s$$
     , array_to_string(
       array(
         SELECT CASE WHEN array[attribute_name] <@ array(SELECT attribute_name FROM unnest(c.attributes))
